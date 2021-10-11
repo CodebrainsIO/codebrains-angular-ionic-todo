@@ -1,23 +1,25 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
-import { DataService, Message } from '../services/data.service';
+import { TodoService, Todo } from '../services/todo.service';
 
 @Component({
-  selector: 'app-view-message',
-  templateUrl: './view-message.page.html',
-  styleUrls: ['./view-message.page.scss'],
+  selector: 'app-view-todo',
+  templateUrl: './view-todo.page.html',
+  styleUrls: ['./view-todo.page.scss'],
 })
-export class ViewMessagePage implements OnInit {
-  public message: Message;
+export class ViewTodoPage implements OnInit {
+  public todo: Todo;
 
   constructor(
-    private data: DataService,
+    private todoService: TodoService,
     private activatedRoute: ActivatedRoute
   ) { }
 
   ngOnInit() {
     const id = this.activatedRoute.snapshot.paramMap.get('id');
-    this.message = this.data.getMessageById(parseInt(id, 10));
+    this.todoService.find(parseInt(id, 10)).then(response => {
+      this.todo = response.data;
+    });
   }
 
   getBackButtonText() {

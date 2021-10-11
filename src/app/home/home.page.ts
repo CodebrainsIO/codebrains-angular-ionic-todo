@@ -1,22 +1,53 @@
-import { Component } from '@angular/core';
-import { DataService, Message } from '../services/data.service';
+import { Component, OnInit } from '@angular/core';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Todo, TodoService } from '../services/todo.service';
 
 @Component({
   selector: 'app-home',
   templateUrl: 'home.page.html',
   styleUrls: ['home.page.scss'],
 })
-export class HomePage {
-  constructor(private data: DataService) {}
+export class HomePage implements OnInit {
+  todos$: Todo[] = [];
+  validateForm!: FormGroup;
 
-  refresh(ev) {
-    setTimeout(() => {
-      ev.detail.complete();
-    }, 3000);
+  constructor(private fb: FormBuilder, private todoService: TodoService) {}
+
+  submitForm(value: { title: string, completed: boolean}): void {
+    for(const key in this.validateForm.controls){
+      if(this.validateForm.controls.hasOwnProperty(key)){
+        this.validateForm.controls[key].markAsDirty();
+        this.validateForm.controls[key].updateValueAndValidity();
+      }
+    }
+    value.completed = false;
+    console.log(value)
+    /*this.todoService.create(value).then(response => {
+      this.todoService.findAll().then((res) => {
+        this.todos$ = response.data;
+      });
+    });*/
+    this.validateForm.reset();
   }
 
-  getMessages(): Message[] {
-    return this.data.getMessages();
+  delete(todo): void {
+    console.log('Delete todo', todo);
+  }
+  ngOnInit(): void {
+    this.todoService.findAll().then((response) => {
+      this.todos$ = response.data;
+    });
+
+    this.validateForm = this.fb.group({
+      title: [null, [Validators.required]]
+    });
+  }
+
+  refresh(ev) {
+    this.todoService.findAll().then((response) => {
+      this.todos$ = response.data;
+      ev.detail.complete();
+    });
   }
 
 }
