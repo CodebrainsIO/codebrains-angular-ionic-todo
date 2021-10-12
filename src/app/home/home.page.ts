@@ -22,11 +22,11 @@ export class HomePage implements OnInit {
     }
     value.completed = false;
     console.log('Submitted', value);
-    /*this.todoService.create(value).then(response => {
+    this.todoService.create(value).then(() => {
       this.todoService.findAll().then((res) => {
-        this.todos$ = response.data;
+        this.todos$ = res.data;
       });
-    });*/
+    });
     this.validateForm.reset();
   }
 
