@@ -61,7 +61,7 @@ export class TodoService {
       // eslint-disable-next-line @typescript-eslint/naming-convention
       headers: { 'Content-Type': 'application/json' }
     };
-    return Http.get(options);
+    return Http.del(options);
   }
 
 }

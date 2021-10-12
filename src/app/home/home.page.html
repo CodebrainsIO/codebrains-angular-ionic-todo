@@ -37,8 +37,8 @@
     <app-todo
       *ngFor="let todo of todos$"
       [todo]="todo"
-      [delete]="delete"
-      [update]="update"
+      [delete]="this.delete"
+      [update]="this.update"
     ></app-todo>
   </ion-list>
 </ion-content>

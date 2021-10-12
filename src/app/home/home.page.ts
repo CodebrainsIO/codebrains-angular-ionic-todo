@@ -30,14 +30,27 @@ export class HomePage implements OnInit {
     this.validateForm.reset();
   }
 
-  update(todo): void {
+  update = (todo) => {
     const updatedTodo = Object.assign({}, todo);
     updatedTodo.completed = !updatedTodo.completed;
     console.log('Todo before update', updatedTodo);
-  }
-  delete(todo): void {
+    this.todoService.update(updatedTodo).then(() => {
+      this.todoService.findAll().then((res) => {
+        this.todos$ = res.data;
+      });
+    });
+
+  };
+
+  delete = (todo: Todo) => {
     console.log('Delete todo', todo);
-  }
+    this.todoService.delete(todo.id).then(() => {
+      this.todoService.findAll().then((res) => {
+        this.todos$ = res.data;
+      });
+    });
+  };
+
   ngOnInit(): void {
     this.todoService.findAll().then((response) => {
       this.todos$ = response.data;
