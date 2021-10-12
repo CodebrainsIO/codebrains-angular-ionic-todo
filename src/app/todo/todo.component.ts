@@ -8,6 +8,7 @@ import { Todo } from '../services/todo.service';
 })
 export class TodoComponent implements OnInit {
   @Input() todo: Todo;
+  @Input() update!: (todo) => void;
   @Input() delete!: (todo) => void;
   constructor() { }
 

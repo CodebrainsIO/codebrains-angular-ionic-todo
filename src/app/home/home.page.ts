@@ -13,15 +13,15 @@ export class HomePage implements OnInit {
 
   constructor(private fb: FormBuilder, private todoService: TodoService) {}
 
-  submitForm(value: { title: string, completed: boolean}): void {
-    for(const key in this.validateForm.controls){
-      if(this.validateForm.controls.hasOwnProperty(key)){
+  submitForm(value: { title: string; completed: boolean }): void {
+    for (const key in this.validateForm.controls) {
+      if (this.validateForm.controls.hasOwnProperty(key)) {
         this.validateForm.controls[key].markAsDirty();
         this.validateForm.controls[key].updateValueAndValidity();
       }
     }
     value.completed = false;
-    console.log(value)
+    console.log('Submitted', value);
     /*this.todoService.create(value).then(response => {
       this.todoService.findAll().then((res) => {
         this.todos$ = response.data;
@@ -30,6 +30,11 @@ export class HomePage implements OnInit {
     this.validateForm.reset();
   }
 
+  update(todo): void {
+    const updatedTodo = Object.assign({}, todo);
+    updatedTodo.completed = !updatedTodo.completed;
+    console.log('Todo before update', updatedTodo);
+  }
   delete(todo): void {
     console.log('Delete todo', todo);
   }
@@ -39,7 +44,7 @@ export class HomePage implements OnInit {
     });
 
     this.validateForm = this.fb.group({
-      title: [null, [Validators.required]]
+      title: [null, [Validators.required]],
     });
   }
 
@@ -49,5 +54,4 @@ export class HomePage implements OnInit {
       ev.detail.complete();
     });
   }
-
 }

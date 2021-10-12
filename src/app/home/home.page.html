@@ -16,16 +16,29 @@
   </ion-header>
 
   <ion-grid class="input-grid">
-    <ion-row>
-      <ion-col size="9">
-        <ion-input placeholder="Enter Todo"></ion-input>
-      </ion-col>
-      <ion-col size="3">
-        <ion-button color="primary" >Add</ion-button>
-      </ion-col>
-    </ion-row>
+    <form
+      [formGroup]="validateForm"
+      (ngSubmit)="submitForm(validateForm.value)"
+    >
+      <ion-row>
+        <ion-col size="9">
+          <ion-input
+            placeholder="Enter Todo"
+            formControlName="title"
+          ></ion-input>
+        </ion-col>
+        <ion-col size="3">
+          <ion-button type="submit" color="primary">Add</ion-button>
+        </ion-col>
+      </ion-row>
+    </form>
   </ion-grid>
   <ion-list>
-    <app-todo *ngFor="let todo of todos$" [todo]="todo" [delete]="delete"></app-todo>
+    <app-todo
+      *ngFor="let todo of todos$"
+      [todo]="todo"
+      [delete]="delete"
+      [update]="update"
+    ></app-todo>
   </ion-list>
 </ion-content>
